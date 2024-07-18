@@ -1,0 +1,15 @@
+{
+  "recommendations": [
+    "astro-build.astro-vscode",
+    "astro-build.houston",
+    "bradlc.vscode-tailwindcss",
+    "eliostruyf.vscode-front-matter-beta",
+    "vue.volar",
+    "oven.bun-vscode",
+    "christian-kohler.npm-intellisense",
+    "unifiedjs.vscode-mdx",
+    "biomejs.biome",
+    "davidanson.vscode-markdownlint"
+  ],
+  "unwantedRecommendations": []
+}

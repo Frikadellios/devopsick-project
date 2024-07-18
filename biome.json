@@ -1,0 +1,81 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+  "extends": [],
+  "files": {
+    "ignoreUnknown": true,
+    "ignore": ["./dist", ".astro", "node_modules"]
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "tab",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 100,
+    "attributePosition": "auto",
+    "ignore": [
+      "node_modules/**",
+      "**/.astro/",
+      "**/node_modules/",
+      "**/package-lock.json",
+      "**/dist/",
+      "**/bun.lockb"
+    ]
+  },
+  "organizeImports": { "enabled": true },
+  "javascript": {
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    },
+    "formatter": {
+      "jsxQuoteStyle": "double",
+      "quoteProperties": "asNeeded",
+      "trailingCommas": "none",
+      "semicolons": "asNeeded",
+      "arrowParentheses": "always",
+      "bracketSpacing": true,
+      "bracketSameLine": false,
+      "quoteStyle": "single",
+      "attributePosition": "auto"
+    }
+  },
+  "json": {
+    "parser": { "allowComments": true },
+    "formatter": {
+      "enabled": true,
+      "indentStyle": "space",
+      "indentWidth": 2,
+      "lineWidth": 80
+    }
+  },
+  "linter": {
+    "ignore": [],
+    "rules": {
+      "a11y": {
+        "recommended": true
+      },
+      "complexity": {
+        "recommended": true
+      },
+      "correctness": {
+        "recommended": true
+      },
+      "performance": {
+        "recommended": true
+      },
+      "security": {
+        "recommended": true
+      },
+      "style": {
+        "recommended": true
+      },
+      "suspicious": {
+        "recommended": true
+      },
+      "nursery": {
+        "recommended": true
+      }
+    }
+  },
+  "overrides": [{ "include": ["*.svg"] }, { "include": ["*.astro"] }]
+}

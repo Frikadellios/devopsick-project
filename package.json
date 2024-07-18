@@ -1,0 +1,66 @@
+{
+  "name": "devopsick-project",
+  "type": "module",
+  "version": "1.0.1",
+  "repository": "https://github.com/Frikadellios/devopsick-project.git",
+  "author": "Hrihorii Ilin <devopsick@pm.me>",
+  "scripts": {
+    "editorconfig": "editorconfig-checker -exclude \"**/node_modules/**\"",
+    "dev": "bunx --bun astro dev --verbose",
+    "start": "bun wrangler types && bun astro check --verbose && bunx --bun astro dev --verbose",
+    "build": "bun wrangler types && bun astro check --verbose && bunx --bun astro build --verbose",
+    "preview": "bunx --bun astro build && bun wrangler pages dev ./dist",
+    "astro": "astro",
+    "deploy": "bunx --bun astro build && bun wrangler pages deploy dist",
+    "browserslist:update": "bunx update-browserslist-db@latest",
+    "cf-typegen": "wrangler types",
+    "format:check": "prettier --check .",
+    "format::write": "prettier --write .",
+    "biomes": "bunx @biomejs/biome check --write .",
+    "biomes:fix": "bunx @biomejs/biome check --fix --unsafe .",
+    "tailwind:cli": "bunx @tailwindcss/cli@next -i ./src/styles/app.css -o ./src/styles/dist/app.css"
+  },
+  "engines": {
+    "node": ">=18.19.1 <19 || >=20.14.0 <21 || >=21.1.0"
+  },
+  "browserslist": [
+    "defaults and fully supports es6-module",
+    "maintained node versions"
+  ],
+  "devDependencies": {
+    "@biomejs/biome": "1.8.3",
+    "@types/bun": "latest",
+    "@types/html": "^1.0.4",
+    "@types/node": "^20.14.11",
+    "prettier": "^3.3.3",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-astro-organize-imports": "^0.4.9",
+    "prettier-plugin-tailwindcss": "^0.6.5",
+    "terser": "^5.31.3",
+    "vite-plugin-lightningcss": "^0.0.5"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.8.2",
+    "@astrojs/mdx": "^3.1.2",
+    "@astrojs/react": "^3.6.0",
+    "@astrojs/rss": "^4.0.7",
+    "@astrojs/sitemap": "^3.1.6",
+    "@astrojs/ts-plugin": "^1.9.0",
+    "@tailwindcss/cli": "^4.0.0-alpha.17",
+    "@tailwindcss/postcss": "^4.0.0-alpha.17",
+    "@tailwindcss/vite": "^4.0.0-alpha.17",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-legacy": "^5.4.1",
+    "astro": "^4.11.6",
+    "install": "^0.13.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwindcss": "^4.0.0-alpha.17",
+    "typescript": "^5.5.3"
+  },
+  "trustedDependencies": ["@biomejs/biome"]
+}
