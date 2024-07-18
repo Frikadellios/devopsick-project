@@ -1,0 +1,113 @@
+---
+import { Image } from 'astro:assets'
+import { type CollectionEntry, getCollection, getEntry } from 'astro:content'
+import LucideArrowLeft from '@/assets/icons/LucideArrowLeft.astro'
+import FormattedDate from '@/components/FormattedDate.astro'
+import Container from '@/components/layouts/Container.astro'
+import { Badge } from '@/components/ui/badge'
+import { buttonVariants } from '@/components/ui/button'
+import { TracingBeam } from '@/components/ui/tracing-beam'
+import Layout from '@/layouts/Layout.astro'
+import { cn } from '@/lib/utils'
+
+type Props = CollectionEntry<'blog'>['data']
+
+export async function getStaticPaths() {
+	const blog = await getCollection('blog')
+	return blog.map((post) => {
+		const [lang, slug] = post.slug.split('/')
+		return {
+			params: { lang, slug },
+			props: { post }
+		}
+	})
+}
+
+const { slug } = Astro.params
+// create static page instead of SSR
+
+const { lang } = Astro.params
+
+const post = await getEntry('blog', `${lang}/${slug}`)
+
+if (!post) {
+	return Astro.redirect('/404')
+}
+const { Content, remarkPluginFrontmatter } = await post.render()
+
+export const prerender = true
+---
+
+<Layout title={post.data.title} description={post.data.description} lang={lang}>
+    <Container>
+    <div class="relative container max-w-screen-md py-10">
+        <button
+          onclick="history.back()"
+          class={cn(
+            buttonVariants({ variant: "ghost" }),
+            "absolute left-[-100px] top-10 hidden xl:inline-flex text-muted-foreground"
+          )}
+          transition:animate="slide"
+        >
+          <LucideArrowLeft>
+          {" "}Back
+        </button>
+  <article
+    class="prose dark:prose-invert max-w-none"
+  >
+        <a
+        href={`/${lang}/blog/category/${post.data.categories}`}
+        transition:name={`badge-cat-${slug}`}
+      >
+        <Badge className="capitalize">
+          {post.data.categories}
+        </Badge>
+      </a>
+  <div class="hero-image width-720 height-360">
+    <Image
+    class="rounded-xl overflow-hidden my-6"
+    width={720}
+    height={360}
+    src={post.data.heroImage}
+    alt={post.data.title}
+    transition:name={'img-' + slug}
+    loading="eager"
+  />
+  </div>
+  <div class="flex items-center justify-between">
+    <span
+      class="font-medium text-muted-foreground"
+      transition:name={`date-${slug}`}
+    >
+    <div class="date">
+        <FormattedDate date={post.data.pubDate} />
+        {
+          post.data.updatedDate && (
+            <div class="last-updated-on">
+              Last updated on <FormattedDate date={post.data.updatedDate} />
+            </div>
+          )
+        }
+      </div>
+    </span>
+    <span class="relative flex justify-center">
+      <div
+        class="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-transparent bg-gradient-to-r from-transparent via-primary-my to-transparent opacity-75"
+      ></div>
+
+      <span class="relative z-10 bg-trancperent px-16"><h4>{post.data.author}</h4></span>
+    </span>
+  </div>
+  <h1 class="font-heading text-4xl my-4" transition:name={`title-${slug}`}>
+    {post.data.title}
+  </h1>
+  <p>{remarkPluginFrontmatter.minutesRead}</p>
+  <p>{post.data.description}</p>
+  <hr class="my-6" />
+  <TracingBeam client:visible>
+      <Content />
+    </TracingBeam>
+  </article>
+</div>
+</Container>
+</Layout>

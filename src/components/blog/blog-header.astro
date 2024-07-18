@@ -1,0 +1,70 @@
+---
+import { getLangFromUrl } from '@/locales/utils'
+const lang = getLangFromUrl(Astro.url)
+import { buttonVariants } from '@/components/ui/button'
+import { getCategories } from '@/lib/fetchers'
+import { cn } from '@/lib/utils'
+
+const categories = await getCategories(lang)
+import Header from '@/components/Header.astro'
+
+interface Props {
+	title: string
+	subtitle: string
+}
+
+// Astro Props & Params
+const { title, subtitle } = Astro.props
+const { category } = Astro.params
+---
+
+<header
+  class='flex flex-col items-center justify-between gap-5 py-10 md:flex-row'>
+  <!-- Header -->
+  <Header title={title} subtitle={subtitle} />
+
+  <!-- Categories List -->
+  <div class='mx-auto mt-3 w-full px-3 md:mx-0 md:mt-0 md:w-fit md:px-0'>
+    {
+      categories?.length ? (
+        <ul class='flex snap-x snap-mandatory items-center space-x-2 overflow-auto pb-2 lg:space-x-2.5'>
+          <li class='flex-shrink-0 snap-start'>
+            <a
+              title={`Category - ${category}`}
+              href={`/${lang}/blog`}
+              class={cn(
+                !category ? 'select-none' : '',
+                buttonVariants({
+                  variant: !category ? "default" : "outline",
+                })
+              )}
+              aria-label='All Posts Link'>
+              All posts
+            </a>
+          </li>
+          {categories.map((item: unknown) => (
+            <li class='flex-shrink-0 snap-start'>
+              <a
+                title={`Category - ${item}`}
+                href={`/${lang}/${item}`}
+                class={cn(
+                "capitalize",
+                item === category ? "select-none" : "",
+                buttonVariants({
+                  variant: item === category ? "default" : "outline",
+                })
+                )}
+                aria-label={`Categorie-${item}`}>
+                {item}
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div />
+      )
+    }
+  </div>
+</header>
+
+<hr class="mb-7" />

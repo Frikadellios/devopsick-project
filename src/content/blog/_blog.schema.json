@@ -1,0 +1,116 @@
+{
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "maxLength": 60
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 160
+    },
+    "author": {
+      "type": "string",
+      "enum": [
+        "Hrihorii Ilin"
+      ]
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "heroImage": {
+      "type": "object",
+      "properties": {
+        "src": {
+          "type": "string"
+        },
+        "width": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "png",
+            "jpg",
+            "jpeg",
+            "tiff",
+            "webp",
+            "gif",
+            "svg",
+            "avif"
+          ]
+        }
+      },
+      "required": [
+        "src",
+        "width",
+        "height",
+        "format"
+      ],
+      "additionalProperties": false
+    },
+    "lang": {
+      "type": "string",
+      "enum": [
+        "en",
+        "es",
+        "uk",
+        "ru",
+        "de",
+        "fr",
+        "pl"
+      ]
+    },
+    "reference": {
+      "type": "string"
+    },
+    "pubDate": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "string",
+          "format": "date-time"
+        }
+      ]
+    },
+    "updatedDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "previewImage": {
+      "type": "string"
+    },
+    "secret": {
+      "type": "boolean",
+      "default": false
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "other"
+      ]
+    },
+    "canonicalURL": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "description",
+    "heroImage",
+    "pubDate"
+  ],
+  "additionalProperties": false,
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

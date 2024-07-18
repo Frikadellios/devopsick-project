@@ -1,0 +1,83 @@
+---
+import { Image } from 'astro:assets'
+import { getCollection } from 'astro:content'
+import FormattedDate from '@/components/FormattedDate.astro'
+import MeteorShower from '@/components/MeteorShower.astro'
+import TwinklingStars from '@/components/TwinklingStars.astro'
+import BlogHeader from '@/components/blog/blog-header.astro'
+import Layout from '@/layouts/Layout.astro'
+import { getPosts } from '@/lib/fetchers'
+import { LANGUAGES_ARRAY } from '@/locales/config'
+
+export const getStaticPaths = () => {
+	return LANGUAGES_ARRAY.map((lang) => ({
+		params: { lang }
+	}))
+}
+
+const { lang } = Astro.params
+
+const blog = await getCollection('blog', ({ slug }) => slug.split('/')[0] === lang)
+export const prerender = true
+const posts = await getPosts(lang)
+---
+
+<Layout title="Blog" description="" lang={lang}>
+    <!-- Light Mode: Particles -->
+    <div class='absolute inset-0 block dark:hidden py-auto'>
+      <div id='particles1' class='fixed inset-0'></div>
+      <div id='particles2' class='fixed inset-0'></div>
+      <div id='particles3' class='fixed inset-0'></div>
+    </div>
+
+    <!-- Dark Theme: Stars -->
+    <div class='absolute inset-0 bg-black hidden dark:block'>
+      <div id='stars1' class='fixed inset-0'></div>
+      <div id='stars2' class='fixed inset-0'></div>
+      <div id='stars3' class='fixed inset-0'></div>
+    </div>
+
+    <!-- Dark Theme: Twinkling Stars / Metors -->
+    <div id="galaxy" class="fixed inset-0">
+      <div class="hidden dark:block">
+        <TwinklingStars/>
+        <MeteorShower/>
+      </div>
+    </div>
+    <script is:inline src="/js/bg.js"></script>
+
+  <!-- HERO -->
+   <section class="relative h-full w-full container py-10">
+    <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+      <div class="mx-auto max-w-lg text-center">
+        <BlogHeader title="Blog" subtitle="description" />
+        </div>
+        <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-9 md:gap-y-11 lg:gap-y-16 lg:gap-x-8 py-10"
+      >
+  {
+    blog.map(({ slug, data }) => (
+      <a
+        class="card my-auto border-l-4 border-l-[#a4cadc] text-[#a4cadc] block pl-2 text-lg"
+        href={`/${lang}/blog/${slug.split("/")[1]}`}
+      >
+        <div class="date my-3">
+        <FormattedDate date={data.pubDate} />
+        {
+          data.updatedDate && (
+            <div class="last-updated-on">
+              Last updated on <FormattedDate date={data.updatedDate} />
+            </div>
+          )
+        }
+      </div>
+        <Image src={data.heroImage} height="300" width="600" class="rounded-md object-cover" alt={data.title} />
+        <h2 set:html={data.title} class="hover:underline" />
+        <p class="my-3" set:html={data.description} />
+      </a>
+    ))
+  }
+  </div>
+</div>
+</section>
+</Layout>

@@ -1,0 +1,71 @@
+---
+import { LANGUAGES, LOCALES, type Lang } from '@/locales/config'
+const url = Astro.url
+const origin = url.origin
+const [, lang, ...slug] = url.pathname.split('/')
+---
+
+<!-- OPTION 01 -->{
+  lang in LANGUAGES && (
+    <select
+      id="lang-selector"
+      class="bg-[#f6e8da] font-bold text-[#1c1c1e] rounded-lg px-3 py-1.5"
+    >
+      <option value="" disabled selected>
+        {LANGUAGES[lang as Lang]}
+      </option>
+      {Object.entries(LANGUAGES).map(([l, label]) => (
+        <>
+          {l !== lang && (
+            <option data-lang={l} value={`${origin}/${l}/${slug.join("/")}`}>
+              {label}
+            </option>
+          )}
+        </>
+      ))}
+    </select>
+  )
+}
+
+<!-- OPTION 02 -->
+<ul class="border-r-2 border-[#f6e8da] pr-2">
+  {
+    Object.entries(LANGUAGES).map(([l, label]) => (
+      <li class="space-y-4">
+        <a
+          href={`${origin}/${l}/${slug.join("/")}`}
+          hreflang={LOCALES[l as keyof typeof LOCALES]}
+          class:list={[
+            "hover:underline underline-offset-4",
+            {
+              "font-bold": l === lang,
+            },
+          ]}
+        >
+          {label}
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<script>
+  function optionsAsLinks(selector: string) {
+    const selectElem = document.querySelector(selector) as HTMLSelectElement
+
+    selectElem.addEventListener("change", () => {
+      const selectedIndex = selectElem.selectedIndex
+
+      if (selectElem.options[selectedIndex].value) {
+        const url = selectElem.options[selectedIndex].value
+        const lang = selectElem.options[selectedIndex].attributes.item(0)!.value
+        const aElem = document.createElement("a")
+        aElem.setAttribute("href", url)
+        aElem.setAttribute("hreflang", lang)
+        aElem.click()
+      }
+    })
+  }
+
+  optionsAsLinks("#lang-selector")
+</script>
