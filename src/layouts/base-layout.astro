@@ -1,0 +1,37 @@
+---
+import BaseHead from '@/components/BaseHead.astro'
+import TailwindIndicator from '@/components/tailwind-indicator.astro'
+import { SITE } from '@/consts'
+import { cn } from '@/lib/utils'
+import I18NHeader from '@/locales/I18nHeaders.astro'
+import { getLangFromUrl } from '@/locales/utils'
+// NOTE: work with { Toaster } from "@/components/ui/sonner" but need to update dark theme
+import { Toaster } from 'sonner'
+
+type Props = {
+	title: string
+	description?: string
+	lang: string
+	bodyClass?: string
+}
+
+const { title, description, bodyClass } = Astro.props
+const lang = getLangFromUrl(Astro.url)
+---
+
+<!doctype html>
+<html lang={lang} class="mx-auto bg-trancperent text-foreground scroll-smooth">
+  <head>
+    <BaseHead
+      title={`${title} | ${SITE.TITLE}`}
+      description={`${description} | ${SITE.DESCRIPTION}`}
+      lang={lang}
+    />
+    <I18NHeader />
+  </head>
+  <body class={cn("flex flex-col min-h-screen", bodyClass)}>
+    <slot />
+    <TailwindIndicator />
+    <Toaster richColors client:only="react" />
+  </body>
+</html>

@@ -1,0 +1,27 @@
+---
+import Footer from '@/components/layouts/footer.astro'
+import NavigationSection from '@/components/react/navigation'
+import { cn } from '@/lib/utils'
+import { getLangFromUrl } from '@/locales/utils'
+import BaseLayout from './base-layout.astro'
+
+type Props = {
+	title: string
+	description?: string
+	mainClass?: string
+	lang: string
+}
+const lang = getLangFromUrl(Astro.url)
+
+const { title, description, mainClass } = Astro.props
+---
+
+<BaseLayout title={title} description={description} lang={lang}>
+    <NavigationSection client:load />
+
+  <main class={cn(mainClass)}>
+    <slot />
+  </main>
+
+  <Footer />
+</BaseLayout>
